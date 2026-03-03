@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>SSADA Settings</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#09090b;color:#fafafa;min-height:100vh;font-family:-apple-system,sans-serif;display:flex;justify-content:center;padding:60px 20px}
+.container{max-width:500px;width:100%}
+h1{font-size:26px;font-weight:800;margin-bottom:6px}
+.sub{color:#52525b;font-size:14px;margin-bottom:36px}
+.card{background:#18181b;border:1px solid #27272a;border-radius:14px;padding:22px;margin-bottom:18px}
+.card h2{font-size:15px;font-weight:700;margin-bottom:14px}
+label{display:block;font-size:11px;font-weight:600;color:#a1a1aa;margin-bottom:5px}
+input{width:100%;background:#27272a;border:1px solid #3f3f46;border-radius:8px;padding:10px 12px;color:#fafafa;font-size:13px;outline:none;margin-bottom:14px}
+input:focus{border-color:#6366f1}
+.btn{background:#6366f1;color:white;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{background:#818cf8}
+.ok{color:#22c55e;font-size:12px;margin-left:10px;display:none;font-weight:600}
+.row{display:flex;align-items:center}
+.step{display:flex;gap:10px;margin-bottom:12px;font-size:12px;line-height:1.5;color:#a1a1aa}
+.num{width:22px;height:22px;background:#6366f1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0}
+a{color:#818cf8}
+</style></head>
+<body><div class="container">
+<h1>SSADA Settings</h1>
+<p class="sub">Naver Shopping API Key (Free)</p>
+<div class="card"><h2>API Key</h2>
+<label>Client ID</label><input type="text" id="cid" placeholder="Client ID"/>
+<label>Client Secret</label><input type="password" id="csec" placeholder="Client Secret"/>
+<div class="row"><button class="btn" id="save">Save</button><span class="ok" id="ok">Saved!</span></div>
+</div>
+<div class="card"><h2>How to get key (1 min)</h2>
+<div class="step"><div class="num">1</div><div>Go to <a href="https://developers.naver.com/apps/#/register?api=search" target="_blank">Naver Developers</a> and login</div></div>
+<div class="step"><div class="num">2</div><div>Click Register Application</div></div>
+<div class="step"><div class="num">3</div><div>Name: anything / API: Search / Env: WEB, URL: http://localhost</div></div>
+<div class="step"><div class="num">4</div><div>Copy Client ID + Secret above</div></div>
+</div></div>
+<script>
+const c=document.getElementById("cid"),s=document.getElementById("csec");
+chrome.storage.sync.get(["naverClientId","naverClientSecret"],(d)=>{if(d.naverClientId)c.value=d.naverClientId;if(d.naverClientSecret)s.value=d.naverClientSecret;});
+document.getElementById("save").onclick=()=>{
+const i=c.value.trim(),se=s.value.trim();
+if(!i||!se){alert("Enter both fields");return;}
+chrome.storage.sync.set({naverClientId:i,naverClientSecret:se},()=>{const o=document.getElementById("ok");o.style.display="inline";setTimeout(()=>o.style.display="none",2000);});
+};
+</script></body></html>
